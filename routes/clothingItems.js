@@ -5,6 +5,6 @@ const {
   removeClothingItem,
 } = require("../controllers/clothingItems");
 
-router.get("/", getClothingItems);
-router.post("/", createClothingItem);
-router.delete("/", removeClothingItem);
+router.get("/items", getClothingItems);
+router.post("/items", createClothingItem);
+router.delete("/items/:itemId", removeClothingItem);
