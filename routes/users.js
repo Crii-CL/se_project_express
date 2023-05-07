@@ -1,15 +1,7 @@
 const router = require("express").Router();
-// const {users} = ()
+let { users } = require("./index");
 
-router.get("./users", (req, res) => {
-  res.send(users);
-});
+router.get("/", getUser);
+router.post("/", createUser);
 
-router.get("./users/:userId", (req, res) => {
-  const { id } = req.params;
-
-  if (!users[id]) {
-    res.send("This user doesn't exist");
-    return;
-  }
-});
+module.exports = router;
