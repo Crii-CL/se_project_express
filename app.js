@@ -1,7 +1,6 @@
 const http = require("http");
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("mongoose");
 const userRoutes = require("./routes/users");
 const path = require("path");
 const clothingItemsRoutes = require("./routes/clothingItems");
@@ -14,15 +13,15 @@ mongoose.connect("mongodb://127.0.0.1:27017/wtwr_db");
 
 app.use(express.json());
 
-app.use("/users", userRoutes);
-app.use("/clothingItems", clothingItemsRoutes);
-
 app.use((req, res, next) => {
   req.user = {
-    _id: "",
+    _id: "6459510221fc6a6cb7c9ee59",
   };
   next();
 });
+
+app.use("/users", userRoutes);
+app.use("/clothingItems", clothingItemsRoutes);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.listen(PORT, () => {
