@@ -25,7 +25,7 @@ app.use((err, req, res, next) => {
   if (err) {
     console.error(err);
     let serverStatus = errors.SERVER_ERROR;
-    let message = "An error has occurred on the server.";
+    let message = "An error has occurred on the server. APP.JS CODE";
 
     if (err.name === "ValidationError" || err.name === "CastError") {
       serverStatus = errors.BAD_REQUEST;

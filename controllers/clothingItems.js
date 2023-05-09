@@ -20,18 +20,11 @@ module.exports.createClothingItem = (req, res, err, next) => {
       .send({ message: "Please fill out remaining fields" });
   }
 
-  // ClothingItem.create({ name, weather, link })
-  //   .then((item) => res.send({ data: item }))
-  //   .catch(() =>
-  //     res.status(500).send({ message: "An error has occurred on the server" })
-  //   );
-
   ClothingItem.create({ name, weather, link })
     .then((item) => res.send({ data: item }))
-    .catch((err) => {
-      next(err);
-      console.log(err);
-    });
+    .catch(() =>
+      res.status(500).send({ message: "An error has occurred on the server" })
+    );
 };
 
 module.exports.removeClothingItem = (req, res) => {
