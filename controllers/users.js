@@ -13,7 +13,8 @@ module.exports.getUsers = (req, res) => {
   User.find({})
     .orFail()
     .then((users) => res.send({ data: users }))
-    .catch(() => res.status(500).send({ message: "error" }));
+    .catch((err) => next({ message: err.name }));
+  // .catch(() => res.status(500).send({ message: "error" }));
 };
 
 module.exports.createUser = (req, res) => {

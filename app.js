@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/users");
 const path = require("path");
 const clothingItemsRoutes = require("./routes/clothingItems");
+const errors = require("./utils/errors");
 
 const { PORT = 3001 } = process.env;
 const app = express();
@@ -17,6 +18,26 @@ app.use((req, res, next) => {
   req.user = {
     _id: "6459510221fc6a6cb7c9ee59",
   };
+  next();
+});
+
+app.use((err, req, res, next) => {
+  if (err) {
+    console.error(err);
+    let serverStatus = errors.SERVER_ERROR;
+    let message = "An error has occurred on the server.";
+
+    if (err.name === "ValidationError" || err.name === "CastError") {
+      serverStatus = errors.BAD_REQUEST;
+      message = "Invalid data passed to the method.";
+    } else if (err.name === "NotFound") {
+      serverStatus = errors.NOT_FOUND;
+      message = "Item not found.";
+    }
+
+    return res.status(serverStatus).json({ message });
+  }
+
   next();
 });
 

@@ -9,7 +9,7 @@ module.exports.getClothingItems = (req, res) => {
     );
 };
 
-module.exports.createClothingItem = (req, res, err) => {
+module.exports.createClothingItem = (req, res, err, next) => {
   console.log(req.user._id);
   console.error(err);
   const { name, weather, link } = req.body;
@@ -20,11 +20,18 @@ module.exports.createClothingItem = (req, res, err) => {
       .send({ message: "Please fill out remaining fields" });
   }
 
+  // ClothingItem.create({ name, weather, link })
+  //   .then((item) => res.send({ data: item }))
+  //   .catch(() =>
+  //     res.status(500).send({ message: "An error has occurred on the server" })
+  //   );
+
   ClothingItem.create({ name, weather, link })
     .then((item) => res.send({ data: item }))
-    .catch(() =>
-      res.status(500).send({ message: "An error has occurred on the server" })
-    );
+    .catch((err) => {
+      next(err);
+      console.log(err);
+    });
 };
 
 module.exports.removeClothingItem = (req, res) => {
