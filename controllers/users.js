@@ -4,12 +4,14 @@ module.exports.getUser = (req, res) => {
   const { userId } = req.params;
 
   User.findById(userId)
+    .orFail()
     .then((user) => res.send({ data: user }))
     .catch(() => res.status(500).send({ message: "error" }));
 };
 
 module.exports.getUsers = (req, res) => {
   User.find({})
+    .orFail()
     .then((users) => res.send({ data: users }))
     .catch(() => res.status(500).send({ message: "error" }));
 };
