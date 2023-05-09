@@ -41,11 +41,13 @@ app.use((err, req, res, next) => {
   next();
 });
 
-app.use("/users", userRoutes);
-app.use("/clothingItems", clothingItemsRoutes);
+// app.use("/users", userRoutes);
+// app.use("/clothingItems", clothingItemsRoutes);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.listen(PORT, () => {
   console.log("App listening on port 3001");
   console.log("---------------------------------");
 });
+
+//move the app.uses to index.js and do router.use in here (watch vishal's video)

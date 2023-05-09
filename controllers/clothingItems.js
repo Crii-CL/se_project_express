@@ -9,6 +9,7 @@ module.exports.getClothingItems = (req, res) => {
       throw err;
     })
     .then((items) => res.send({ data: items }))
+    // .catch(() => res.status(404).send({ message: "Item not found" }));
     .catch((err) => res.send({ message: "Item not found" }));
 };
 
@@ -36,14 +37,12 @@ module.exports.removeClothingItem = (req, res) => {
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
     .then((item) => {
-      if (!item) {
-        return res.status(404).send({ message: "Item not found" });
-      }
+      // if (!item) {
+      //   return res.status(404).send({ message: "Item not found" });
+      // }
       res.send({ message: "Item removed" });
     })
-    .catch(() =>
-      res.status(500).send({ message: "An error has occurred on the server" })
-    );
+    .catch((err) => next(err));
 };
 
 module.exports.likeItem = (req, res) =>
