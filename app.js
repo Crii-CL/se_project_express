@@ -26,4 +26,5 @@ app.use("/clothingItems", clothingItemsRoutes);
 app.use(express.static(path.join(__dirname, "public")));
 app.listen(PORT, () => {
   console.log("App listening on port 3001");
+  console.log("---------------------------------");
 });

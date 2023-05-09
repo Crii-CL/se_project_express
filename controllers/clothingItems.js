@@ -3,7 +3,9 @@ const ClothingItem = require("../models/clothingItem");
 module.exports.getClothingItems = (req, res) => {
   ClothingItem.find({})
     .then((items) => res.send({ data: items }))
-    .catch(() => res.status(500).send({ message: "error" }));
+    .catch(() =>
+      res.status(500).send({ message: "An error has occurred on the server" })
+    );
 };
 
 module.exports.createClothingItem = (req, res, err) => {
@@ -32,5 +34,7 @@ module.exports.removeClothingItem = (req, res) => {
       }
       res.send({ message: "Item removed" });
     })
-    .catch(() => res.status(500).send({ message: "error" }));
+    .catch(() =>
+      res.status(500).send({ message: "An error has occurred on the server" })
+    );
 };
