@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const error = require("../utils/errors");
 
-module.exports.getUser = (req, res) => {
+module.exports.getUser = (req, res, next) => {
   const { userId } = req.params;
 
   User.findById(userId)
@@ -14,7 +14,7 @@ module.exports.getUser = (req, res) => {
     .catch((err) => next(err));
 };
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find({})
     .orFail(() => {
       const err = new Error("User not found");
@@ -25,7 +25,7 @@ module.exports.getUsers = (req, res) => {
     .catch((err) => next(err));
 };
 
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const { name, avatar } = req.body;
 
   User.create({ name, avatar })

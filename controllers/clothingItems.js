@@ -1,6 +1,19 @@
 const ClothingItem = require("../models/clothingItem");
 const error = require("../utils/errors");
 
+module.exports.getClothingItem = (req, res, next) => {
+  const { itemId } = req.params;
+
+  ClothingItem.findById(itemId)
+    .orFail(() => {
+      const err = new Error("Item not found");
+      err.statusCode = error.NOT_FOUND;
+      throw err;
+    })
+    .then((item) => res.send({ data: item }))
+    .catch((err) => next(err));
+};
+
 module.exports.getClothingItems = (req, res, next) => {
   ClothingItem.find({})
     .orFail(() => {
@@ -20,13 +33,14 @@ module.exports.createClothingItem = (req, res, next) => {
     error.status = error.BAD_REQUEST;
     throw err;
   }
+  // if(imageUrl.){}
 
   ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.send({ data: item }))
     .catch((err) => next(err));
 };
 
-module.exports.removeClothingItem = (req, res) => {
+module.exports.removeClothingItem = (req, res, next) => {
   const { itemId } = req.params;
 
   ClothingItem.findByIdAndDelete(itemId)
