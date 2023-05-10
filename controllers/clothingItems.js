@@ -60,11 +60,19 @@ module.exports.likeItem = (req, res) =>
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
     { new: true }
-  );
+  )
+    .then(() => {
+      res.send({ message: "Item liked" });
+    })
+    .catch((err) => next(err));
 
 module.exports.dislikeItem = (req, res) =>
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $pull: { likes: req.user._id } },
     { new: true }
-  );
+  )
+    .then(() => {
+      res.send({ message: "Item disliked" });
+    })
+    .catch((err) => next(err));

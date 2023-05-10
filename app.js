@@ -10,6 +10,12 @@ const app = express();
 mongoose.connect("mongodb://127.0.0.1:27017/wtwr_db");
 
 app.use(express.json());
+app.use((req, res, next) => {
+  req.user = {
+    _id: "6459510221fc6a6cb7c9ee59",
+  };
+  next();
+});
 app.use(routes);
 
 app.use((err, req, res, next) => {
@@ -29,13 +35,6 @@ app.use((err, req, res, next) => {
     return res.status(serverStatus).json({ message });
   }
 
-  next();
-});
-
-app.use((req, res, next) => {
-  req.user = {
-    _id: "6459510221fc6a6cb7c9ee59",
-  };
   next();
 });
 
