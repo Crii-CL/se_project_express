@@ -5,16 +5,10 @@ module.exports = {
     es2021: true,
   },
   extends: ["eslint:recommended", "airbnb-base", "prettier"],
-  overrides: [
-    {
-      files: ["index.js"],
-      rules: {
-        "no-underscore-dangle": "off",
-      },
-    },
-  ],
   parserOptions: {
     ecmaVersion: "latest",
   },
-  rules: {},
+  rules: {
+    "no-underscore-dangle": "off",
+  },
 };

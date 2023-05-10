@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const User = require("./user");
 const validator = require("validator");
 
 const clothingItemsSchema = new mongoose.Schema({
@@ -14,7 +13,7 @@ const clothingItemsSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: function (v) {
+      validator(v) {
         return validator.isURL(v);
       },
     },
@@ -25,4 +24,4 @@ const clothingItemsSchema = new mongoose.Schema({
   createdAt: { type: Date, value: Date.now },
 });
 
-module.exports = new mongoose.model("clothingItems", clothingItemsSchema);
+module.exports = mongoose.model("ClothingItems", clothingItemsSchema);

@@ -1,13 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-const errors = require("./utils/errors");
+// const errors = require("./utils/errors");
 const routes = require("./routes");
 const validator = require("./middlewares/validation");
+
 const { PORT = 3001 } = process.env;
 const app = express();
 
-//wtwr_db is the name of the database you connect to. However, you can choose your own database name, if you prefer.
 mongoose.connect("mongodb://127.0.0.1:27017/wtwr_db");
 
 app.use(express.json());
@@ -43,8 +43,6 @@ app.use(validator);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.listen(PORT, () => {
-  console.log("App listening on port 3001");
-  console.log("---------------------------------");
+  // console.log("App listening on port 3001");
+  // console.log("---------------------------------");
 });
-
-//move the app.uses to index.js and do router.use in here (watch vishal's video)

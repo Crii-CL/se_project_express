@@ -8,7 +8,7 @@ module.exports.getUser = (req, res, next) => {
     .orFail(() => {
       const err = new Error("User not found");
       error.status = error.NOT_FOUND;
-      throw error;
+      throw err;
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => next(err));
@@ -19,7 +19,7 @@ module.exports.getUsers = (req, res, next) => {
     .orFail(() => {
       const err = new Error("User not found");
       error.status = error.NOT_FOUND;
-      throw error;
+      throw err;
     })
     .then((users) => res.send({ data: users }))
     .catch((err) => next(err));
