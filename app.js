@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const errors = require("./utils/errors");
 const routes = require("./routes");
+const middleware = require("./middleware/middleware");
 const { PORT = 3001 } = process.env;
 const app = express();
 
@@ -18,25 +19,27 @@ app.use((req, res, next) => {
 });
 app.use(routes);
 
-app.use((err, req, res, next) => {
-  if (err) {
-    console.error(err);
-    let serverStatus = errors.SERVER_ERROR;
-    let message = "An error has occurred on the server.";
+app.use(middleware);
 
-    if (err.name === "ValidationError" || err.name === "CastError") {
-      serverStatus = errors.BAD_REQUEST;
-      message = "Invalid data passed to the method(s).";
-    } else if (err.name === "NotFound") {
-      serverStatus = errors.NOT_FOUND;
-      message = "Item not found.";
-    }
+// app.use((err, req, res, next) => {
+//   if (err) {
+//     console.error(err);
+//     let serverStatus = errors.SERVER_ERROR;
+//     let message = "An error has occurred on the server.";
 
-    return res.status(serverStatus).json({ message });
-  }
+//     if (err.name === "ValidationError" || err.name === "CastError") {
+//       serverStatus = errors.BAD_REQUEST;
+//       message = "Invalid data passed to the method(s).";
+//     } else if (err.name === "NotFound") {
+//       serverStatus = errors.NOT_FOUND;
+//       message = "Item not found.";
+//     }
 
-  next();
-});
+//     return res.status(serverStatus).json({ message });
+//   }
+
+//   next();
+// });
 
 app.use(express.static(path.join(__dirname, "public")));
 app.listen(PORT, () => {

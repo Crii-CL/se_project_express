@@ -55,7 +55,7 @@ module.exports.removeClothingItem = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-module.exports.likeItem = (req, res) =>
+module.exports.likeItem = (req, res, next) =>
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
@@ -66,7 +66,7 @@ module.exports.likeItem = (req, res) =>
     })
     .catch((err) => next(err));
 
-module.exports.dislikeItem = (req, res) =>
+module.exports.dislikeItem = (req, res, next) =>
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $pull: { likes: req.user._id } },
