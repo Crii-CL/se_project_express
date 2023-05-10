@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const errors = require("./utils/errors");
 const routes = require("./routes");
-const middleware = require("./utils/middlewares");
+const validator = require("./middlewares/validation");
 const { PORT = 3001 } = process.env;
 const app = express();
 
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 });
 app.use(routes);
 
-app.use(middleware);
+app.use(validator);
 
 // app.use((err, req, res, next) => {
 //   if (err) {
