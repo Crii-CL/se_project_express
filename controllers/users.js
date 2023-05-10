@@ -6,9 +6,11 @@ module.exports.getUser = (req, res, next) => {
 
   User.findById(userId)
     .orFail(() => {
-      const err = new Error("User not found");
-      error.status = error.NOT_FOUND;
-      throw err;
+      if (!userId) {
+        const err = new Error("User not found");
+        error.status = error.NOT_FOUND;
+        throw err;
+      }
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => next(err));

@@ -33,8 +33,6 @@ module.exports.createClothingItem = (req, res, next) => {
     error.status = error.BAD_REQUEST;
     throw err;
   }
-  // if(imageUrl.){}
-
   ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.send({ data: item }))
     .catch((err) => next(err));
