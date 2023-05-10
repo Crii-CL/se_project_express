@@ -36,7 +36,7 @@ module.exports.removeClothingItem = (req, res) => {
       throw err;
     })
     .then((item) => {
-      res.send({ message: "Item removed" });
+      res.send({ data: item, message: "Item removed" });
     })
     .catch((err) => next(err));
 };
