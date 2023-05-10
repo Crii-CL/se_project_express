@@ -16,14 +16,14 @@ app.use((err, req, res, next) => {
   if (err) {
     console.error(err);
     let serverStatus = errors.SERVER_ERROR;
-    let message = "An error has occurred on the server. APP.JS CODE";
+    let message = "An error has occurred on the server. App.js ";
 
     if (err.name === "ValidationError" || err.name === "CastError") {
       serverStatus = errors.BAD_REQUEST;
-      message = "Invalid data passed to the method.";
+      message = "Invalid data passed to the method. App.js ";
     } else if (err.name === "NotFound") {
       serverStatus = errors.NOT_FOUND;
-      message = "Item not found.";
+      message = "Item not found. App.js ";
     }
 
     return res.status(serverStatus).json({ message });
