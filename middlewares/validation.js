@@ -1,16 +1,17 @@
 const errors = require("../utils/errors");
 
 module.exports = (err, req, res, next) => {
+  // console.error(err);
   if (err) {
     let serverStatus = errors.SERVER_ERROR;
     let message = "An error has occurred on the server.";
 
-    if (err.name === "ValidationError" || err.name === "CastError") {
+    if (err.name === "BadRequest") {
       serverStatus = errors.BAD_REQUEST;
-      message = "Invalid data passed to the method(s).";
+      message = "Invalid data";
     } else if (err.name === "NotFound") {
       serverStatus = errors.NOT_FOUND;
-      message = "Item not found.";
+      message = err.message || "Resource not found";
     }
 
     return res.status(serverStatus).json({ message });

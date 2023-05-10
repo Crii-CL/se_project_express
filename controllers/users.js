@@ -6,11 +6,10 @@ module.exports.getUser = (req, res, next) => {
 
   User.findById(userId)
     .orFail(() => {
-      if (!userId) {
-        const err = new Error("User not found");
-        error.status = error.NOT_FOUND;
-        throw err;
-      }
+      const err = new Error("User not found");
+      err.status = error.NOT_FOUND;
+      err.name = "NotFound";
+      throw err;
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => next(err));
@@ -20,7 +19,8 @@ module.exports.getUsers = (req, res, next) => {
   User.find({})
     .orFail(() => {
       const err = new Error("User not found");
-      error.status = error.NOT_FOUND;
+      err.status = error.NOT_FOUND;
+      err.name = "NotFound";
       throw err;
     })
     .then((users) => res.send({ data: users }))

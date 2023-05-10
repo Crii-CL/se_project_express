@@ -8,6 +8,7 @@ module.exports.getClothingItem = (req, res, next) => {
     .orFail(() => {
       const err = new Error("Item not found");
       err.statusCode = error.NOT_FOUND;
+      err.name = "NotFound";
       throw err;
     })
     .then((item) => res.send({ data: item }))
@@ -19,6 +20,7 @@ module.exports.getClothingItems = (req, res, next) => {
     .orFail(() => {
       const err = new Error("Item not found");
       err.statusCode = error.NOT_FOUND;
+      err.name = "NotFound";
       throw err;
     })
     .then((items) => res.send({ data: items }))
@@ -30,7 +32,8 @@ module.exports.createClothingItem = (req, res, next) => {
 
   if (!name || !weather || !imageUrl || !owner) {
     const err = new Error("Please fill out the remaining fields");
-    error.status = error.BAD_REQUEST;
+    err.status = error.BAD_REQUEST;
+    err.name = "BadRequest";
     throw err;
   }
   ClothingItem.create({ name, weather, imageUrl, owner })
@@ -44,7 +47,8 @@ module.exports.removeClothingItem = (req, res, next) => {
   ClothingItem.findByIdAndDelete(itemId)
     .orFail(() => {
       const err = new Error("Item not found");
-      error.status = error.NOT_FOUND;
+      err.status = error.NOT_FOUND;
+      err.name = "NotFound";
       throw err;
     })
     .then((item) => {
