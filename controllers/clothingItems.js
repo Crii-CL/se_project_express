@@ -28,15 +28,15 @@ module.exports.getClothingItems = (req, res, next) => {
 };
 
 module.exports.createClothingItem = (req, res, next) => {
-  const { name, weather, imageUrl, owner } = req.body;
+  const { name, weather, imageUrl } = req.body;
 
-  if (!name || !weather || !imageUrl || !owner) {
+  if (!name || !weather || !imageUrl) {
     const err = new Error("Please fill out the remaining fields");
     err.status = error.BAD_REQUEST;
     err.name = "BadRequest";
     throw err;
   }
-  ClothingItem.create({ name, weather, imageUrl, owner })
+  ClothingItem.create({ name, weather, imageUrl })
     .then((item) => res.send({ data: item }))
     .catch((err) => next(err));
 };
@@ -63,6 +63,12 @@ module.exports.likeItem = (req, res, next) =>
     { $addToSet: { likes: req.user._id } },
     { new: true }
   )
+    .orFail(() => {
+      const err = new Error("Item not found");
+      err.status = error.NOT_FOUND;
+      err.name = "NotFound";
+      throw err;
+    })
     .then(() => {
       res.send({ message: "Item liked" });
     })
@@ -74,6 +80,12 @@ module.exports.dislikeItem = (req, res, next) =>
     { $pull: { likes: req.user._id } },
     { new: true }
   )
+    .orFail(() => {
+      const err = new Error("Item not found");
+      err.status = error.NOT_FOUND;
+      err.name = "NotFound";
+      throw err;
+    })
     .then(() => {
       res.send({ message: "Item disliked" });
     })
