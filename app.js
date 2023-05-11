@@ -1,9 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const helmet = require("helmet");
 const routes = require("./routes");
 const validator = require("./middlewares/validation");
-const helmet = require("helmet");
 
 const { PORT = 3001 } = process.env;
 const app = express();

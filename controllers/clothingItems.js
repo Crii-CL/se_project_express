@@ -29,6 +29,7 @@ module.exports.getClothingItems = (req, res, next) => {
 
 module.exports.createClothingItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
+  const { owner } = req.user._id;
 
   if (!name || !weather || !imageUrl) {
     const err = new Error("Please fill out the remaining fields");
@@ -36,7 +37,7 @@ module.exports.createClothingItem = (req, res, next) => {
     err.name = "BadRequest";
     throw err;
   }
-  ClothingItem.create({ name, weather, imageUrl })
+  ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.send({ data: item }))
     .catch((err) => next(err));
 };
