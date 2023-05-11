@@ -29,7 +29,7 @@ module.exports.getClothingItems = (req, res, next) => {
 
 module.exports.createClothingItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
-  const { owner } = req.user._id;
+  const owner = req.user._id;
 
   if (!name || !weather || !imageUrl) {
     const err = new Error("Please fill out the remaining fields");
