@@ -4,12 +4,15 @@ const validator = require("validator");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
+    default: "Elise Bouer",
     required: true,
     minlength: 2,
     maxlength: 30,
   },
   avatar: {
     type: String,
+    default:
+      " https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Elise.png",
     required: true,
     validate: {
       validator(v) {
@@ -39,7 +42,7 @@ const userSchema = new mongoose.Schema({
     maxlength: 30,
     validate: {
       validator(v) {
-        return /(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z\d]/.test(v);
+        return /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v);
       },
       message: "You must enter a valid password",
     },
