@@ -1,7 +1,7 @@
 const errors = require("../utils/errors");
 
 module.exports = (err, req, res, next) => {
-  // console.error(err);
+  console.error(err);
   if (err) {
     let serverStatus = errors.SERVER_ERROR;
     let message = "An error has occurred on the server.";

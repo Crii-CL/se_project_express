@@ -5,7 +5,7 @@ const helmet = require("helmet");
 const routes = require("./routes");
 const validator = require("./middlewares/validation");
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3000 } = process.env; //change back to port 3001
 const app = express();
 
 mongoose.connect("mongodb://127.0.0.1:27017/wtwr_db");
