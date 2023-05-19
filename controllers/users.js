@@ -33,14 +33,6 @@ module.exports.createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
   User.create({ name, avatar, email, password })
-    .onFail(() => {
-      const err = new Error(
-        "Make sure that passwords are hashed before being saved to the database."
-      );
-      err.status = error.DUPLICATE;
-      err.name = "Duplicate error";
-      throw err;
-    })
     .then((user) => res.send({ data: user }))
     .catch((err) => next(err));
 };
@@ -49,6 +41,14 @@ module.exports.userLogin = (req, res, next) => {
   const { email, password } = req.body;
 
   User.findByUserCredentials({ email, password })
+    .orFail(() => {
+      const err = new Error(
+        "Make sure that passwords are hashed before being saved to the database."
+      );
+      err.status = error.DUPLICATE;
+      err.name = "Duplicate error";
+      throw err;
+    })
     .then((user) => {
       const token = jtw.sign({ _id: user._id }, config.JWT_SECRET, {
         expiresIn: "7d",
