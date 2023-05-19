@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const error = require("../utils/errors");
-const config = require("../utils/config");
+const {JWT_SECRET} = require("../utils/config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -40,8 +40,9 @@ exports.createUser = (req, res, next) => {
         err.status = error.DUPLICATE;
         err.name = "Duplicate";
         throw err;
+      } else if (!existingUser) {
+        return bcrypt.hash(password, 10);
       }
-      return bcrypt.hash(password, 10);
     })
     .then((hash) => {
       return User.create({
@@ -54,7 +55,7 @@ exports.createUser = (req, res, next) => {
     .then((user) => {
       res.send({ data: user });
     })
-    .catch((err) => {
+    .catch((err) => {¬
       next(err);
     });
 };
@@ -64,7 +65,7 @@ exports.userLogin = (req, res, next) => {
 
   User.findByUserCredentials({ email, password })
     .then((user) => {
-      const token = jtw.sign({ _id: user._id }, config.JWT_SECRET, {
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
       res.send({ token });

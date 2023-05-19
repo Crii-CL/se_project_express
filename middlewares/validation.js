@@ -17,7 +17,6 @@ module.exports = (err, req, res, next) => {
       serverStatus = errors.NOT_FOUND;
       message = err.message || "Resource not found";
     } else if (err.name === "Duplicate") {
-      server.status = errors.DUPLICATE;
       message = err.message || "This is a duplicate resource";
     }
 
