@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const error = require("../utils/errors");
+const jwt = require("jsonwebtoken");
 
 module.exports.getUser = (req, res, next) => {
   const { userId } = req.params;
@@ -31,6 +32,27 @@ module.exports.createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
   User.create({ name, avatar, email, password })
+    .onFail(() => {
+      const err = new Error(
+        "Make sure that passwords are hashed before being saved to the database."
+      );
+      err.status = error.DUPLICATE;
+      err.name = "Duplicate error";
+      throw err;
+    })
     .then((user) => res.send({ data: user }))
     .catch((err) => next(err));
+};
+
+module.exports.userLogin = (req, res, next) => {
+  const { email, password } = req.body;
+
+  User.findByUserCredentials({ email, password })
+    .then((user) => {
+      const token = jtw.sign({ _id: user._id }, JWT_SECRET);
+      res.send({ token });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };

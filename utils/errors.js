@@ -8,4 +8,5 @@ module.exports = {
   NOT_ALLOWED: 405,
   SERVER_ERROR: 500,
   NOT_IMPLEMENTED: 501,
+  DUPLICATE: 1100,
 };
