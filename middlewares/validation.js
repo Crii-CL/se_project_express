@@ -16,6 +16,9 @@ module.exports = (err, req, res, next) => {
     } else if (err.name === "NotFound") {
       serverStatus = errors.NOT_FOUND;
       message = err.message || "Resource not found";
+    } else if (err.name === "Duplicate") {
+      server.status = errors.DUPLICATE;
+      message = err.message || "This is a duplicate resource";
     }
 
     return res.status(serverStatus).json({ message });

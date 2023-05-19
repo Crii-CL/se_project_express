@@ -1,9 +1,10 @@
 const User = require("../models/user");
 const error = require("../utils/errors");
-const jwt = require("jsonwebtoken");
 const config = require("../utils/config");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
-module.exports.getUser = (req, res, next) => {
+exports.getUser = (req, res, next) => {
   const { userId } = req.params;
 
   User.findById(userId)
@@ -17,7 +18,7 @@ module.exports.getUser = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-module.exports.getUsers = (req, res, next) => {
+exports.getUsers = (req, res, next) => {
   User.find({})
     .orFail(() => {
       const err = new Error("User not found");
@@ -29,26 +30,39 @@ module.exports.getUsers = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-module.exports.createUser = (req, res, next) => {
+exports.createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
   User.create({ name, avatar, email, password })
-    .then((user) => res.send({ data: user }))
-    .catch((err) => next(err));
+    .then((existingUser) => {
+      if (existingUser) {
+        const err = new Error("Email already in use");
+        err.status = error.DUPLICATE;
+        err.name = "Duplicate";
+        throw err;
+      }
+      return bcrypt.hash(password, 10);
+    })
+    .then((hash) => {
+      return User.create({
+        name: name,
+        avatar: avatar,
+        email: email,
+        password: hash,
+      });
+    })
+    .then((user) => {
+      res.send({ data: user });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-module.exports.userLogin = (req, res, next) => {
+exports.userLogin = (req, res, next) => {
   const { email, password } = req.body;
 
   User.findByUserCredentials({ email, password })
-    .orFail(() => {
-      const err = new Error(
-        "Make sure that passwords are hashed before being saved to the database."
-      );
-      err.status = error.DUPLICATE;
-      err.name = "Duplicate error";
-      throw err;
-    })
     .then((user) => {
       const token = jtw.sign({ _id: user._id }, config.JWT_SECRET, {
         expiresIn: "7d",
