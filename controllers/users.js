@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const error = require("../utils/errors");
 const jwt = require("jsonwebtoken");
+const config = require("../utils/config");
 
 module.exports.getUser = (req, res, next) => {
   const { userId } = req.params;
@@ -49,7 +50,9 @@ module.exports.userLogin = (req, res, next) => {
 
   User.findByUserCredentials({ email, password })
     .then((user) => {
-      const token = jtw.sign({ _id: user._id }, JWT_SECRET);
+      const token = jtw.sign({ _id: user._id }, config.JWT_SECRET, {
+        expiresIn: "7d",
+      });
       res.send({ token });
     })
     .catch((err) => {
