@@ -1,6 +1,6 @@
 const errors = require("../utils/errors");
 
-module.exports = (err, req, res, next) => {
+exports.validator = (err, req, res, next) => {
   console.error(err);
   if (err) {
     let serverStatus = errors.SERVER_ERROR;
