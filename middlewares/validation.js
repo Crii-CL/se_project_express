@@ -9,15 +9,14 @@ module.exports = (err, req, res, next) => {
     if (
       err.name === "BadRequest" ||
       err.name === "ValidationError" ||
-      err.name === "CastError"
+      err.name === "CastError" ||
+      err.name === "Duplicate"
     ) {
       serverStatus = errors.BAD_REQUEST;
       message = "Invalid data";
     } else if (err.name === "NotFound") {
       serverStatus = errors.NOT_FOUND;
       message = err.message || "Resource not found";
-    } else if (err.name === "Duplicate") {
-      message = err.message || "This is a duplicate resource";
     }
 
     return res.status(serverStatus).json({ message });
