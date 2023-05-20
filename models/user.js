@@ -50,4 +50,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema.statics.findUseByCredentials = ({ email, password }) => {};
+
 module.exports = mongoose.model("User", userSchema);
