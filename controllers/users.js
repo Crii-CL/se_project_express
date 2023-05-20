@@ -4,7 +4,7 @@ const { JWT_SECRET } = require("../utils/config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-exports.getUser = (req, res, next) => {
+exports.getCurrentUser = (req, res, next) => {
   const { userId } = req.params;
 
   User.findById(userId)
@@ -68,6 +68,21 @@ exports.userLogin = (req, res, next) => {
         expiresIn: "7d",
       });
       res.send({ token });
+    })
+    .catch((err) => {
+      next(err);
+    });
+
+  User.findOne({ email })
+    .select("+password")
+    .then((user) => {
+      if (!user) {
+        const err = new Error("User not found");
+        err.status = error.NOT_FOUND;
+        err.name = "NotFound";
+        throw err;
+      }
+      res.send({ data: user });
     })
     .catch((err) => {
       next(err);

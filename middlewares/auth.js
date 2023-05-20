@@ -5,8 +5,13 @@ const error = require("../utils/errors");
 module.exports.authorization = (req, res, next) => {
   const authorization = req.headers.authorization;
 
-  if (!authorization || !authorization.startsWith("Bearer ")) {
+  if (
+    !authorization ||
+    typeof authorization !== "string" ||
+    !authorization.startsWith("Bearer ")
+  ) {
     res.status(error.UNAUTHORIZED).send("Authorization Error");
+    return;
   }
   const token = authorization.replace("Bearer ", "");
 
