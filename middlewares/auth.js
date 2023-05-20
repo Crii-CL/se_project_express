@@ -3,7 +3,7 @@ const { JWT_SECRET } = require("../utils/config");
 const error = require("../utils/errors");
 
 module.exports.authorization = (req, res, next) => {
-  const authorization = req.headers.authorization;
+  const { authorization } = req.headers.authorization;
 
   if (
     !authorization ||
@@ -22,5 +22,5 @@ module.exports.authorization = (req, res, next) => {
   } catch (err) {
     next(err);
   }
-  return next();
+  next();
 };
