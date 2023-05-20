@@ -40,7 +40,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 5,
-    maxlength: 30,
     validate: {
       validator(v) {
         return /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v);
