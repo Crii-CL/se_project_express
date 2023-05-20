@@ -17,10 +17,13 @@ exports.validator = (err, req, res, next) => {
       err.name === "Duplicate"
     ) {
       serverStatus = errors.BAD_REQUEST;
-      message = "Invalid data";
+      message = err.message || "Invalid data";
     } else if (err.name === "NotFound") {
       serverStatus = errors.NOT_FOUND;
       message = err.message || "Resource not found";
+    } else if (err.name === "Unauthorized") {
+      serverStatus = errors.UNAUTHORIZED;
+      message = err.message || "Unauthorized";
     }
 
     return res.status(serverStatus).json({ message });

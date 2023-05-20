@@ -43,7 +43,7 @@ exports.createClothingItem = (req, res, next) => {
 };
 
 exports.removeClothingItem = (req, res, next) => {
-  const { itemId } = req.params;
+  const { itemId, userId, ownerId } = req.params;
 
   ClothingItem.findByIdAndDelete(itemId)
     .orFail(() => {
@@ -53,6 +53,12 @@ exports.removeClothingItem = (req, res, next) => {
       throw err;
     })
     .then((item) => {
+      if (userId !== ownerId) {
+        const err = new Error("This user is not the owner of this resource");
+        err.status = error.UNAUTHORIZED;
+        err.name = "Unauthorized";
+        throw err;
+      }
       res.send({ data: item, message: "Item removed" });
     })
     .catch((err) => next(err));
