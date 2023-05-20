@@ -9,11 +9,11 @@ const {
 } = require("../controllers/clothingItems");
 const { authorization } = require("../middlewares/auth");
 
-router.get("/:itemId", getClothingItem, authorization);
-router.get("/", getClothingItems, authorization);
-router.post("/", createClothingItem, authorization);
-router.put("/:itemId/likes", likeItem), authorization;
-router.delete("/:itemId/likes", dislikeItem, authorization);
-router.delete("/:itemId", removeClothingItem, authorization);
+router.get("/:itemId", authorization, getClothingItem);
+router.get("/", authorization, getClothingItems);
+router.post("/", authorization, createClothingItem);
+router.put("/:itemId/likes", authorization, likeItem);
+router.delete("/:itemId/likes", authorization, dislikeItem);
+router.delete("/:itemId", authorization, removeClothingItem);
 
 module.exports = router;

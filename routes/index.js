@@ -5,8 +5,8 @@ const error = require("../utils/errors");
 const { createUser, userLogin } = require("../controllers/users");
 const { authorization } = require("../middlewares/auth");
 
-router.get("/items", clothingItems); // had router.use
-router.get("/users", users, authorization); //had router.use
+router.use("/items", clothingItems);
+router.use("/users", authorization, users);
 router.post("/signin", userLogin);
 router.post("/signup", createUser);
 
