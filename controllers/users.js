@@ -5,9 +5,9 @@ const error = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
 
 exports.getCurrentUser = (req, res, next) => {
-  const { userId } = req.params;
+  const { _id } = req.user;
 
-  User.findById(userId)
+  User.findById(_id)
     .orFail(() => {
       const err = new Error("User not found");
       err.status = error.NOT_FOUND;
@@ -37,7 +37,7 @@ exports.createUser = (req, res, next) => {
     .then((existingUser) => {
       if (existingUser) {
         const err = new Error("Email already in use");
-        err.status = error.BAD_REQUEST;
+        err.status = error.DUPLICATE;
         err.name = "Duplicate";
         throw err;
       }
@@ -68,7 +68,7 @@ exports.createUser = (req, res, next) => {
 exports.userLogin = (req, res) => {
   const { email, password } = req.body;
 
-  User.findUserByCredentials({ email, password })
+  User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",

@@ -16,6 +16,5 @@ app.use(helmet());
 app.use(cors());
 app.use(routes);
 app.use(validator);
-app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(PORT, () => {});

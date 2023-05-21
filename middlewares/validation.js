@@ -13,8 +13,7 @@ exports.validator = (err, req, res, next) => {
     if (
       err.name === "BadRequest" ||
       err.name === "ValidationError" ||
-      err.name === "CastError" ||
-      err.name === "Duplicate"
+      err.name === "CastError"
     ) {
       serverStatus = errors.BAD_REQUEST;
       message = err.message || "Invalid data";
@@ -27,6 +26,9 @@ exports.validator = (err, req, res, next) => {
     } else if (err.name === "Forbidden") {
       serverStatus = errors.FORBIDDEN;
       message = err.message || "Forbidden";
+    } else if (err.name === "Duplicate") {
+      serverStatus = errors.DUPLICATE;
+      message = err.messsage || "Duplicate";
     }
 
     return res.status(serverStatus).json({ message });

@@ -39,6 +39,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false,
     validate: {
       validator(v) {
         return /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v);

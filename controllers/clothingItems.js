@@ -12,7 +12,7 @@ exports.getClothingItem = (req, res, next) => {
       throw err;
     })
     .then((item) => res.send({ data: item }))
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 exports.getClothingItems = (req, res, next) => {
