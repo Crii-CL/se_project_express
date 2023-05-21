@@ -51,8 +51,14 @@ exports.createUser = (req, res, next) => {
         password: hash,
       })
     )
-    .then(({ name, avatar, email }) => {
-      res.send({ data: { name, avatar, email } });
+    .then((createdUser) => {
+      res.send({
+        data: {
+          name: createdUser.name,
+          avatar: createdUser.avatar,
+          email: createdUser.email,
+        },
+      });
     })
     .catch((err) => {
       next(err);
@@ -69,7 +75,7 @@ exports.userLogin = (req, res) => {
       });
       res.send({ token });
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(error.UNAUTHORIZED).send({ message: "Unauthorized" });
     });
 };
