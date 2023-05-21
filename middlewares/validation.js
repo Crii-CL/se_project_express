@@ -24,6 +24,9 @@ exports.validator = (err, req, res, next) => {
     } else if (err.name === "Unauthorized") {
       serverStatus = errors.UNAUTHORIZED;
       message = err.message || "Unauthorized";
+    } else if (err.name === "Forbidden") {
+      serverStatus = errors.FORBIDDEN;
+      message = err.message || "Forbidden";
     }
 
     return res.status(serverStatus).json({ message });

@@ -3,15 +3,17 @@ const { JWT_SECRET } = require("../utils/config");
 const error = require("../utils/errors");
 
 module.exports.authorization = (req, res, next) => {
-  const { authorization } = req.headers.authorization;
+  const { authorization } = req.headers;
 
   if (
     !authorization ||
     typeof authorization !== "string" ||
     !authorization.startsWith("Bearer ")
   ) {
-    res.status(error.UNAUTHORIZED).send("Authorization Error");
-    return;
+    const err = new Error("Authorization Error");
+    err.status = error.UNAUTHORIZED;
+    err.name = "Unauthorized";
+    throw err;
   }
   const token = authorization.replace("Bearer ", "");
 

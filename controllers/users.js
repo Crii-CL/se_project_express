@@ -51,15 +51,15 @@ exports.createUser = (req, res, next) => {
         password: hash,
       })
     )
-    .then((user) => {
-      res.send({ data: user });
+    .then(({ name, avatar, email }) => {
+      res.send({ data: { name, avatar, email } });
     })
     .catch((err) => {
       next(err);
     });
 };
 
-exports.userLogin = (req, res, next) => {
+exports.userLogin = (req, res) => {
   const { email, password } = req.body;
 
   User.findUserByCredentials({ email, password })
@@ -70,28 +70,13 @@ exports.userLogin = (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
-      next(err);
-    });
-
-  User.findOne({ email })
-    .select("+password")
-    .then((user) => {
-      if (!user) {
-        const err = new Error("User not found");
-        err.status = error.NOT_FOUND;
-        err.name = "NotFound";
-        throw err;
-      }
-      res.send({ data: user });
-    })
-    .catch((err) => {
-      next(err);
+      res.status(error.UNAUTHORIZED).send({ message: "Unauthorized" });
     });
 };
 
-exports.updateName = (req, res, next) => {
-  const { name } = req.body;
-  const update = { name };
+exports.updateUser = (req, res, next) => {
+  const { name, avatar } = req.body;
+  const update = { name, avatar };
 
   User.findOneAndUpdate({ _id: req.user._id }, update, {
     new: true,
@@ -105,71 +90,6 @@ exports.updateName = (req, res, next) => {
         throw err;
       }
       res.send({ data: { user, message: "Username updated successfully" } });
-    })
-    .catch((err) => {
-      next(err);
-    });
-};
-exports.updateAvatar = (req, res, next) => {
-  const { Avatar } = req.body;
-  const update = { Avatar };
-
-  User.findOneAndUpdate({ _id: req.user._id }, update, {
-    new: true,
-    runValidators: true,
-  })
-    .then((user) => {
-      if (!user) {
-        const err = new Error("User not found");
-        err.status = error.NOT_FOUND;
-        err.name = "NotFound";
-        throw err;
-      }
-      res.send({ data: { user, message: "Avatar updated successfully" } });
-    })
-    .catch((err) => {
-      next(err);
-    });
-};
-
-exports.updateEmail = (req, res, next) => {
-  const { email } = req.body;
-  const update = { email };
-
-  User.findOneAndUpdate({ _id: req.user._id }, update, {
-    new: true,
-    runValidators: true,
-  })
-    .then((user) => {
-      if (!user) {
-        const err = new Error("User not found");
-        err.status = error.NOT_FOUND;
-        err.name = "NotFound";
-        throw err;
-      }
-      res.send({ data: { user, message: "Email updated successfully" } });
-    })
-    .catch((err) => {
-      next(err);
-    });
-};
-
-exports.updatePassword = (req, res, next) => {
-  const { password } = req.body;
-  const update = { password };
-
-  User.findOneAndUpdate({ _id: req.user._id }, update, {
-    new: true,
-    runValidators: true,
-  })
-    .then((user) => {
-      if (!user) {
-        const err = new Error("User not found");
-        err.status = error.NOT_FOUND;
-        err.name = "NotFound";
-        throw err;
-      }
-      res.send({ data: { user, message: "Password updated successfully" } });
     })
     .catch((err) => {
       next(err);
