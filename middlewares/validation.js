@@ -1,7 +1,7 @@
 const errors = require("../utils/errors");
 
 exports.validator = (err, req, res, next) => {
-  // console.error(err);
+  console.error(err);
   if (res.headersSent) {
     return next(err);
   }
