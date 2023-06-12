@@ -67,7 +67,6 @@ exports.removeClothingItem = (req, res, next) => {
 };
 
 exports.likeItem = (req, res, next) => {
-  console.log("hello--------------------");
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
