@@ -66,7 +66,8 @@ exports.removeClothingItem = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-exports.likeItem = (req, res, next) =>
+exports.likeItem = (req, res, next) => {
+  console.log("hello--------------------");
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
@@ -82,6 +83,7 @@ exports.likeItem = (req, res, next) =>
       res.send({ message: "Item liked" });
     })
     .catch((err) => next(err));
+};
 
 exports.dislikeItem = (req, res, next) =>
   ClothingItem.findByIdAndUpdate(
