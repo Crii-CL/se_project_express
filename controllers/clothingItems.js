@@ -78,8 +78,8 @@ exports.likeItem = (req, res, next) => {
       err.name = "NotFound";
       throw err;
     })
-    .then(() => {
-      res.send({ message: "Item liked" });
+    .then((item) => {
+      res.send({ data: item });
     })
     .catch((err) => next(err));
 };
@@ -96,7 +96,7 @@ exports.dislikeItem = (req, res, next) =>
       err.name = "NotFound";
       throw err;
     })
-    .then(() => {
-      res.send({ message: "Item disliked" });
+    .then((item) => {
+      res.send({ data: item });
     })
     .catch((err) => next(err));
