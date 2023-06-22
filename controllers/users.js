@@ -5,7 +5,7 @@ const User = require("../models/user");
 const {
   NotFoundError,
   DuplicateError,
-} = require("../middlewares/validator.js");
+} = require("../middlewares/errorHandler.js");
 const { JWT_SECRET } = require("../utils/config");
 
 exports.getCurrentUser = (req, res, next) => {
@@ -13,10 +13,6 @@ exports.getCurrentUser = (req, res, next) => {
 
   User.findById(_id)
     .orFail(() => {
-      // const err = new Error("User not found");
-      // err.status = error.NOT_FOUND;
-      // err.name = "NotFound";
-      // throw err;
       throw new NotFoundError("User not found");
     })
     .then((user) => res.send({ data: user }))
@@ -26,10 +22,6 @@ exports.getCurrentUser = (req, res, next) => {
 exports.getUsers = (req, res, next) => {
   User.find({})
     .orFail(() => {
-      // const err = new Error("User not found");
-      // err.status = error.NOT_FOUND;
-      // err.name = "NotFound";
-      // throw err;
       throw new NotFoundError("User not found");
     })
     .then((users) => res.send({ data: users }))
@@ -42,10 +34,6 @@ exports.createUser = (req, res, next) => {
   User.findOne({ email })
     .then((existingUser) => {
       if (existingUser) {
-        // const err = new Error("Email already exists");
-        // err.status = error.DUPLICATE;
-        // err.name = "Duplicate";
-        // throw err;
         throw new DuplicateError("Email already exists");
       }
       return bcrypt.hash(password, 10);
@@ -95,10 +83,6 @@ exports.updateUser = (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        // const err = new Error("User not found");
-        // err.status = error.NOT_FOUND;
-        // err.name = "NotFound";
-        // throw err;
         throw new NotFoundError("User not found");
       }
       res.send({ data: { user, message: "Username updated successfully" } });

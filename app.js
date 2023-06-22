@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const helmet = require("helmet");
 const cors = require("cors");
 const routes = require("./routes");
-const { validator } = require("./middlewares/validator");
-const errorHandler = require("./middlewares/validator");
+const { validator } = require("./middlewares/errorHandler");
+const { handleErrorMiddleware } = require("./middlewares/errorHandler");
 
 const { PORT = 3001 } = process.env;
 const app = express();
@@ -15,6 +15,6 @@ app.use(helmet());
 app.use(cors());
 app.use(routes);
 // app.use(validator);
-app.use(errorHandler)
+app.use(handleErrorMiddleware);
 
 app.listen(PORT, () => {});
