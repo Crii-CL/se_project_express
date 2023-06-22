@@ -10,6 +10,10 @@ router.use("/users", authorization, users);
 router.post("/signin", userLogin);
 router.post("/signup", createUser);
 
+// router.use("*", (req, res) => {
+//   res.status(error.NOT_FOUND).send({ message: "Requested resource not found" });
+// });
+
 router.use("*", (req, res) => {
   res.status(error.NOT_FOUND).send({ message: "Requested resource not found" });
 });

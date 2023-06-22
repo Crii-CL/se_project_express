@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const routes = require("./routes");
 const { validator } = require("./middlewares/validator");
+const errorHandler = require("./middlewares/validator");
 
 const { PORT = 3001 } = process.env;
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(routes);
-app.use(validator);
+// app.use(validator);
+app.use(errorHandler)
 
 app.listen(PORT, () => {});

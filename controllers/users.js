@@ -1,7 +1,11 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
-const error = require("../utils/errors");
+// const error = require("../utils/errors");
+const {
+  NotFoundError,
+  DuplicateError,
+} = require("../middlewares/validator.js");
 const { JWT_SECRET } = require("../utils/config");
 
 exports.getCurrentUser = (req, res, next) => {
@@ -9,25 +13,27 @@ exports.getCurrentUser = (req, res, next) => {
 
   User.findById(_id)
     .orFail(() => {
-      const err = new Error("User not found");
-      err.status = error.NOT_FOUND;
-      err.name = "NotFound";
-      throw err;
+      // const err = new Error("User not found");
+      // err.status = error.NOT_FOUND;
+      // err.name = "NotFound";
+      // throw err;
+      throw new NotFoundError("User not found");
     })
     .then((user) => res.send({ data: user }))
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 exports.getUsers = (req, res, next) => {
   User.find({})
     .orFail(() => {
-      const err = new Error("User not found");
-      err.status = error.NOT_FOUND;
-      err.name = "NotFound";
-      throw err;
+      // const err = new Error("User not found");
+      // err.status = error.NOT_FOUND;
+      // err.name = "NotFound";
+      // throw err;
+      throw new NotFoundError("User not found");
     })
     .then((users) => res.send({ data: users }))
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 exports.createUser = (req, res, next) => {
@@ -36,10 +42,11 @@ exports.createUser = (req, res, next) => {
   User.findOne({ email })
     .then((existingUser) => {
       if (existingUser) {
-        const err = new Error("Email already in use");
-        err.status = error.DUPLICATE;
-        err.name = "Duplicate";
-        throw err;
+        // const err = new Error("Email already exists");
+        // err.status = error.DUPLICATE;
+        // err.name = "Duplicate";
+        // throw err;
+        throw new DuplicateError("Email already exists");
       }
       return bcrypt.hash(password, 10);
     })
@@ -60,9 +67,7 @@ exports.createUser = (req, res, next) => {
         },
       });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 exports.userLogin = (req, res) => {
@@ -90,14 +95,13 @@ exports.updateUser = (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        const err = new Error("User not found");
-        err.status = error.NOT_FOUND;
-        err.name = "NotFound";
-        throw err;
+        // const err = new Error("User not found");
+        // err.status = error.NOT_FOUND;
+        // err.name = "NotFound";
+        // throw err;
+        throw new NotFoundError("User not found");
       }
       res.send({ data: { user, message: "Username updated successfully" } });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
