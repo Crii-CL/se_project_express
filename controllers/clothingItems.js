@@ -1,5 +1,4 @@
 const ClothingItem = require("../models/clothingItem");
-// const error = require("../utils/errors");
 const {
   BadRequestError,
   ForbiddenError,

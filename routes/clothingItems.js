@@ -8,23 +8,17 @@ const {
   likeItem,
 } = require("../controllers/clothingItems");
 const { authorization } = require("../middlewares/auth");
-const { celebrate, Joi } = require("celebrate");
+const {
+  validateCardBody,
+  validateItemId,
+  validateAddCard,
+} = require("../middlewares/validation");
 
-router.get(
-  "/:itemId",
-  getClothingItem,
-  authorization,
-  celebrate({
-    params: Joi.object().keys({
-      itemId: Joi.string().required(),
-    }),
-  })
-);
-
+router.get("/:itemId", authorization, validateItemId, getClothingItem);
 router.get("/", getClothingItems);
-router.post("/", createClothingItem, authorization);
-router.put("/:itemId/likes", likeItem, authorization);
-router.delete("/:itemId/likes", dislikeItem, authorization);
-router.delete("/:itemId", removeClothingItem, authorization);
+router.post("/", authorization, validateAddCard, createClothingItem);
+router.put("/:itemId/likes", authorization, validateItemId, likeItem);
+router.delete("/:itemId/likes", authorization, dislikeItem);
+router.delete("/:itemId", authorization, validateItemId, removeClothingItem);
 
 module.exports = router;

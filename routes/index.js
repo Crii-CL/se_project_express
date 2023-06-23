@@ -4,15 +4,38 @@ const users = require("./users");
 const error = require("../utils/errors");
 const { createUser, userLogin } = require("../controllers/users");
 const { authorization } = require("../middlewares/auth");
+const { celebrate, Joi } = require("celebrate");
+const { validateUser } = require("../middlewares/validation");
 
 router.use("/items", clothingItems);
-router.use("/users", users, authorization);
-router.post("/signin", userLogin);
-router.post("/signup", createUser);
-
-// router.use("*", (req, res) => {
-//   res.status(error.NOT_FOUND).send({ message: "Requested resource not found" });
-// });
+router.use("/users", authorization, users);
+router.post(
+  "/signin",
+  celebrate({
+    body: Joi.object()
+      .keys({
+        email: Joi.string().required(),
+        password: Joi.string().required().min(5),
+      })
+      .unknown(true),
+  }),
+  userLogin
+);
+router.post(
+  "/signup",
+  // celebrate({
+  //   body: Joi.object()
+  //     .keys({
+  //       name: Joi.string().required().min(2).max(30),
+  //       avatar: Joi.string().uri().required(),
+  //       email: Joi.string().required(),
+  //       password: Joi.string().required().min(5),
+  //     })
+  //     .unknown(true),
+  // }),
+  validateUser,
+  createUser
+);
 
 router.use("*", (req, res) => {
   res.status(error.NOT_FOUND).send({ message: "Requested resource not found" });
