@@ -9,7 +9,6 @@ const {
 } = require("../controllers/clothingItems");
 const { authorization } = require("../middlewares/auth");
 const {
-  validateCardBody,
   validateItemId,
   validateAddCard,
 } = require("../middlewares/validation");
