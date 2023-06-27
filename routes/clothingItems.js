@@ -17,7 +17,7 @@ router.get("/:itemId", authorization, validateItemId, getClothingItem);
 router.get("/", getClothingItems);
 router.post("/", authorization, validateAddCard, createClothingItem);
 router.put("/:itemId/likes", authorization, validateItemId, likeItem);
-router.delete("/:itemId/likes", authorization, dislikeItem);
+router.delete("/:itemId/likes", authorization, validateItemId, dislikeItem);
 router.delete("/:itemId", authorization, validateItemId, removeClothingItem);
 
 module.exports = router;

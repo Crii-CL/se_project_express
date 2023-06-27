@@ -6,6 +6,7 @@ const { createUser, userLogin } = require("../controllers/users");
 const { authorization } = require("../middlewares/auth");
 const { celebrate, Joi } = require("celebrate");
 const { validateUser } = require("../middlewares/validation");
+const { NotFoundError } = require("../middlewares/errorHandler");
 
 router.use("/items", clothingItems);
 router.use("/users", authorization, users);
@@ -25,7 +26,7 @@ router.post(
 router.post("/signup", validateUser, createUser);
 
 router.use("*", (req, res) => {
-  res.status(error.NOT_FOUND).send({ message: "Requested resource not found" });
+  throw new NotFoundError("Requested resource was not found");
 });
 
 module.exports = router;

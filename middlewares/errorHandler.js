@@ -1,3 +1,5 @@
+const express = require("express");
+const app = express();
 class ErrorHandler {
   constructor() {
     this.handleError = this.handleError.bind(this);
@@ -34,9 +36,6 @@ class ErrorHandler {
     } else if (err instanceof ConflictError) {
       statusCode = err.statusCode;
       message = err.message || "Conflict";
-    } else if (err instanceof ServerError) {
-      statusCode = err.statusCode;
-      message = err.message || "Server Error";
     } else if (err instanceof NotImplementedError) {
       statusCode = err.statusCode;
       message = err.message || "Not Implemented";
@@ -110,14 +109,6 @@ class ConflictError extends Error {
   }
 }
 
-class ServerError extends Error {
-  constructor(message) {
-    super(message);
-    this.statusCode = 500;
-    this.name = "ServerError";
-  }
-}
-
 class NotImplementedError extends Error {
   constructor(message) {
     super(message);
@@ -131,6 +122,13 @@ const handleErrorMiddleware = (err, req, res, next) => {
   errorHandler.handleError(err, req, res, next);
 };
 
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({
+    message: statusCode === 500 ? "An error occurred on the server" : message,
+  });
+});
+
 module.exports = {
   handleErrorMiddleware,
   MovedPermanentlyError,
@@ -141,45 +139,5 @@ module.exports = {
   NotFoundError,
   MethodNotAllowedError,
   ConflictError,
-  ServerError,
   NotImplementedError,
 };
-
-// const errors = require("../utils/errors");
-
-// exports.validator = (err, req, res, next) => {
-//   console.error(err);
-//   if (res.headersSent) {
-//     return next(err);
-//   }
-
-//   if (err) {
-//     let serverStatus = errors.SERVER_ERROR;
-//     let message = "An error has occurred on the server.";
-
-//     if (
-//       err.name === "BadRequest" ||
-//       err.name === "ValidationError" ||
-//       err.name === "CastError"
-//     ) {
-//       serverStatus = errors.BAD_REQUEST;
-//       message = err.message || "Invalid data";
-//     } else if (err.name === "NotFound") {
-//       serverStatus = errors.NOT_FOUND;
-//       message = err.message || "Resource not found";
-//     } else if (err.name === "Unauthorized") {
-//       serverStatus = errors.UNAUTHORIZED;
-//       message = err.message || "Unauthorized";
-//     } else if (err.name === "Forbidden") {
-//       serverStatus = errors.FORBIDDEN;
-//       message = err.message || "Forbidden";
-//     } else if (err.name === "Duplicate") {
-//       serverStatus = errors.DUPLICATE;
-//       message = err.messsage || "Duplicate";
-//     }
-
-//     return res.status(serverStatus).json({ message });
-//   }
-
-//   return next();
-// };
