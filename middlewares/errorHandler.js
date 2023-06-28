@@ -14,31 +14,22 @@ class ErrorHandler {
 
     if (err instanceof MovedPermanentlyError) {
       statusCode = err.statusCode;
-      message = err.message || "Moved Permanently";
     } else if (err instanceof FoundError) {
       statusCode = err.statusCode;
-      message = err.message || "Found";
     } else if (err instanceof BadRequestError) {
       statusCode = err.statusCode;
-      message = err.message || "Bad Request";
     } else if (err instanceof UnauthorizedError) {
       statusCode = err.statusCode;
-      message = err.message || "Unauthorized";
     } else if (err instanceof ForbiddenError) {
       statusCode = err.statusCode;
-      message = err.message || "Forbidden";
     } else if (err instanceof NotFoundError) {
       statusCode = err.statusCode;
-      message = err.message || "Resource not found";
     } else if (err instanceof MethodNotAllowedError) {
       statusCode = err.statusCode;
-      message = err.message || "Method Not Allowed";
     } else if (err instanceof ConflictError) {
       statusCode = err.statusCode;
-      message = err.message || "Conflict";
     } else if (err instanceof NotImplementedError) {
       statusCode = err.statusCode;
-      message = err.message || "Not Implemented";
     }
 
     res.status(statusCode).json({ message });
@@ -46,7 +37,7 @@ class ErrorHandler {
 }
 
 class MovedPermanentlyError extends Error {
-  constructor(message) {
+  constructor(message = "Resource Moved Permanently") {
     super(message);
     this.statusCode = 301;
     this.name = "MovedPermanentlyError";
@@ -54,7 +45,7 @@ class MovedPermanentlyError extends Error {
 }
 
 class FoundError extends Error {
-  constructor(message) {
+  constructor(message = "Found Error") {
     super(message);
     this.statusCode = 302;
     this.name = "FoundError";
@@ -62,7 +53,7 @@ class FoundError extends Error {
 }
 
 class BadRequestError extends Error {
-  constructor(message) {
+  constructor(message = "Bad Request") {
     super(message);
     this.statusCode = 400;
     this.name = "BadRequestError";
@@ -70,7 +61,7 @@ class BadRequestError extends Error {
 }
 
 class UnauthorizedError extends Error {
-  constructor(message) {
+  constructor(message = "Unauthorized") {
     super(message);
     this.statusCode = 401;
     this.name = "UnauthorizedError";
@@ -78,7 +69,7 @@ class UnauthorizedError extends Error {
 }
 
 class ForbiddenError extends Error {
-  constructor(message) {
+  constructor(message = "Forbidden") {
     super(message);
     this.statusCode = 403;
     this.name = "ForbiddenError";
@@ -86,7 +77,7 @@ class ForbiddenError extends Error {
 }
 
 class NotFoundError extends Error {
-  constructor(message) {
+  constructor(message = "Not Found") {
     super(message);
     this.statusCode = 404;
     this.name = "NotFoundError";
@@ -94,7 +85,7 @@ class NotFoundError extends Error {
 }
 
 class MethodNotAllowedError extends Error {
-  constructor(message) {
+  constructor(message = "Method Not Allowed") {
     super(message);
     this.statusCode = 405;
     this.name = "MethodNotAllowedError";
@@ -102,7 +93,7 @@ class MethodNotAllowedError extends Error {
 }
 
 class ConflictError extends Error {
-  constructor(message) {
+  constructor(message = "Conflict Error") {
     super(message);
     this.statusCode = 409;
     this.name = "ConflictError";
@@ -110,7 +101,7 @@ class ConflictError extends Error {
 }
 
 class NotImplementedError extends Error {
-  constructor(message) {
+  constructor(message = "Not Implemented") {
     super(message);
     this.statusCode = 501;
     this.name = "NotImplementedError";
@@ -121,13 +112,6 @@ const handleErrorMiddleware = (err, req, res, next) => {
   const errorHandler = new ErrorHandler();
   errorHandler.handleError(err, req, res, next);
 };
-
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res.status(statusCode).send({
-    message: statusCode === 500 ? "An error occurred on the server" : message,
-  });
-});
 
 module.exports = {
   handleErrorMiddleware,

@@ -21,6 +21,12 @@ app.get("/crash-test", () => {
   }, 0);
 });
 app.use(routes);
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({
+    message: statusCode === 500 ? "An error occurred on the server" : message,
+  });
+});
 app.use(errorLogger);
 app.use(errors());
 app.use(handleErrorMiddleware);
