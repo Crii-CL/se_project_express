@@ -1,10 +1,9 @@
 const router = require("express").Router();
+const { celebrate, Joi } = require("celebrate");
 const clothingItems = require("./clothingItems");
 const users = require("./users");
-const error = require("../utils/errors");
 const { createUser, userLogin } = require("../controllers/users");
 const { authorization } = require("../middlewares/auth");
-const { celebrate, Joi } = require("celebrate");
 const { validateUser } = require("../middlewares/validation");
 const { NotFoundError } = require("../middlewares/errorHandler");
 
@@ -25,8 +24,8 @@ router.post(
 );
 router.post("/signup", validateUser, createUser);
 
-router.use("*", (req, res) => {
-  throw new NotFoundError("Requested resource was not found");
+router.use("*", () => {
+  throw new NotFoundError("Route not found");
 });
 
 module.exports = router;
