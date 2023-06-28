@@ -2,8 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 const cors = require("cors");
-const routes = require("./routes");
 const { errors } = require("celebrate");
+const routes = require("./routes");
 const { handleErrorMiddleware } = require("./middlewares/errorHandler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 

@@ -1,40 +1,4 @@
 const express = require("express");
-const app = express();
-class ErrorHandler {
-  constructor() {
-    this.handleError = this.handleError.bind(this);
-  }
-  handleError(err, req, res, next) {
-    console.error(err);
-    if (res.headersSent) {
-      return next(err);
-    }
-    let statusCode = 500;
-    let message = "An error has occurred on the server";
-
-    if (err instanceof MovedPermanentlyError) {
-      statusCode = err.statusCode;
-    } else if (err instanceof FoundError) {
-      statusCode = err.statusCode;
-    } else if (err instanceof BadRequestError) {
-      statusCode = err.statusCode;
-    } else if (err instanceof UnauthorizedError) {
-      statusCode = err.statusCode;
-    } else if (err instanceof ForbiddenError) {
-      statusCode = err.statusCode;
-    } else if (err instanceof NotFoundError) {
-      statusCode = err.statusCode;
-    } else if (err instanceof MethodNotAllowedError) {
-      statusCode = err.statusCode;
-    } else if (err instanceof ConflictError) {
-      statusCode = err.statusCode;
-    } else if (err instanceof NotImplementedError) {
-      statusCode = err.statusCode;
-    }
-
-    res.status(statusCode).json({ message });
-  }
-}
 
 class MovedPermanentlyError extends Error {
   constructor(message = "Resource Moved Permanently") {
@@ -105,6 +69,52 @@ class NotImplementedError extends Error {
     super(message);
     this.statusCode = 501;
     this.name = "NotImplementedError";
+  }
+}
+
+class ErrorHandler {
+  constructor() {
+    this.handleError = this.handleError.bind(this);
+  }
+  handleError(err, req, res, next) {
+    console.error(err);
+
+    if (res.headersSent) {
+      return next(err);
+    }
+    let statusCode = 500;
+    let message = "An error has occurred on the server";
+
+    if (err instanceof MovedPermanentlyError) {
+      statusCode = err.statusCode;
+      message = err.message;
+    } else if (err instanceof FoundError) {
+      statusCode = err.statusCode;
+      message = err.message;
+    } else if (err instanceof BadRequestError) {
+      statusCode = err.statusCode;
+      message = err.message;
+    } else if (err instanceof UnauthorizedError) {
+      statusCode = err.statusCode;
+      message = err.message;
+    } else if (err instanceof ForbiddenError) {
+      statusCode = err.statusCode;
+      message = err.message;
+    } else if (err instanceof NotFoundError) {
+      statusCode = err.statusCode;
+      message = err.message;
+    } else if (err instanceof MethodNotAllowedError) {
+      statusCode = err.statusCode;
+      message = err.message;
+    } else if (err instanceof ConflictError) {
+      statusCode = err.statusCode;
+      message = err.message;
+    } else if (err instanceof NotImplementedError) {
+      statusCode = err.statusCode;
+      message = err.message;
+    }
+
+    res.status(statusCode).json({ message });
   }
 }
 

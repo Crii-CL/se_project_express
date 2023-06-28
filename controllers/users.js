@@ -5,7 +5,7 @@ const error = require("../utils/errors");
 const {
   NotFoundError,
   DuplicateError,
-} = require("../middlewares/errorHandler.js");
+} = require("../middlewares/errorHandler");
 const { JWT_SECRET } = require("../utils/config");
 
 exports.getCurrentUser = (req, res, next) => {
