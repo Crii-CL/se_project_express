@@ -21,6 +21,9 @@ app.get("/crash-test", () => {
   }, 0);
 });
 app.use(routes);
+app.use(errorLogger);
+app.use(errors());
+app.use(handleErrorMiddleware);
 app.use((err, req, res, next) => {
   console.error(err);
   const { statusCode = 500, message } = err;
@@ -28,8 +31,4 @@ app.use((err, req, res, next) => {
     message: statusCode === 500 ? "An error occurred on the server" : message,
   });
 });
-app.use(errorLogger);
-app.use(errors());
-app.use(handleErrorMiddleware);
-
 app.listen(PORT, () => {});
