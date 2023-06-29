@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-
 class MovedPermanentlyError extends Error {
   constructor(message = "Resource Moved Permanently") {
     super(message);
