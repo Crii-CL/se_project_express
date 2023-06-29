@@ -5,6 +5,7 @@ const error = require("../utils/errors");
 const {
   NotFoundError,
   DuplicateError,
+  UnauthorizedError,
 } = require("../middlewares/errorHandler");
 const { JWT_SECRET } = require("../utils/config");
 
@@ -69,7 +70,7 @@ exports.userLogin = (req, res) => {
       res.send({ token });
     })
     .catch(() => {
-      res.status(error.UNAUTHORIZED).send({ message: "Unauthorized" });
+      next(new UnauthorizedError("Unauthorized"));
     });
 };
 

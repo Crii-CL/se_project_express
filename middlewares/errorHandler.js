@@ -1,19 +1,3 @@
-class MovedPermanentlyError extends Error {
-  constructor(message = "Resource Moved Permanently") {
-    super(message);
-    this.statusCode = 301;
-    this.name = "MovedPermanentlyError";
-  }
-}
-
-class FoundError extends Error {
-  constructor(message = "Found Error") {
-    super(message);
-    this.statusCode = 302;
-    this.name = "FoundError";
-  }
-}
-
 class BadRequestError extends Error {
   constructor(message = "Bad Request") {
     super(message);
@@ -46,27 +30,11 @@ class NotFoundError extends Error {
   }
 }
 
-class MethodNotAllowedError extends Error {
-  constructor(message = "Method Not Allowed") {
-    super(message);
-    this.statusCode = 405;
-    this.name = "MethodNotAllowedError";
-  }
-}
-
 class ConflictError extends Error {
   constructor(message = "Conflict Error") {
     super(message);
     this.statusCode = 409;
     this.name = "ConflictError";
-  }
-}
-
-class NotImplementedError extends Error {
-  constructor(message = "Not Implemented") {
-    super(message);
-    this.statusCode = 501;
-    this.name = "NotImplementedError";
   }
 }
 
@@ -85,9 +53,6 @@ class ErrorHandler {
     if (err instanceof MovedPermanentlyError) {
       this.statusCode = err.statusCode;
       this.message = err.message;
-    } else if (err instanceof FoundError) {
-      this.statusCode = err.statusCode;
-      this.message = err.message;
     } else if (err instanceof BadRequestError) {
       this.statusCode = err.statusCode;
       this.message = err.message;
@@ -100,13 +65,7 @@ class ErrorHandler {
     } else if (err instanceof NotFoundError) {
       this.statusCode = err.statusCode;
       this.message = err.message;
-    } else if (err instanceof MethodNotAllowedError) {
-      this.statusCode = err.statusCode;
-      this.message = err.message;
     } else if (err instanceof ConflictError) {
-      this.statusCode = err.statusCode;
-      this.message = err.message;
-    } else if (err instanceof NotImplementedError) {
       this.statusCode = err.statusCode;
       this.message = err.message;
     }
@@ -122,13 +81,9 @@ const handleErrorMiddleware = (err, req, res, next) => {
 
 module.exports = {
   handleErrorMiddleware,
-  MovedPermanentlyError,
-  FoundError,
   BadRequestError,
   UnauthorizedError,
   ForbiddenError,
   NotFoundError,
-  MethodNotAllowedError,
   ConflictError,
-  NotImplementedError,
 };
