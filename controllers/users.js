@@ -4,7 +4,7 @@ const User = require("../models/user");
 const error = require("../utils/errors");
 const {
   NotFoundError,
-  DuplicateError,
+  ConflictError,
   UnauthorizedError,
 } = require("../middlewares/errorHandler");
 const { JWT_SECRET } = require("../utils/config");
@@ -35,7 +35,7 @@ exports.createUser = (req, res, next) => {
   User.findOne({ email })
     .then((existingUser) => {
       if (existingUser) {
-        throw new DuplicateError("Email already exists");
+        throw new ConflictError("Email already exists");
       }
       return bcrypt.hash(password, 10);
     })

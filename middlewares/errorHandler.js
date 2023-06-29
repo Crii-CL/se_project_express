@@ -46,14 +46,12 @@ class ErrorHandler {
   }
 
   handleError(err, req, res, next) {
+    console.error(err);
     if (res.headersSent) {
       return next(err);
     }
 
-    if (err instanceof MovedPermanentlyError) {
-      this.statusCode = err.statusCode;
-      this.message = err.message;
-    } else if (err instanceof BadRequestError) {
+    if (err instanceof BadRequestError) {
       this.statusCode = err.statusCode;
       this.message = err.message;
     } else if (err instanceof UnauthorizedError) {
