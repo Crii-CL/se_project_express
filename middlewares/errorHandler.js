@@ -51,19 +51,13 @@ class ErrorHandler {
       return next(err);
     }
 
-    if (err instanceof BadRequestError) {
-      this.statusCode = err.statusCode;
-      this.message = err.message;
-    } else if (err instanceof UnauthorizedError) {
-      this.statusCode = err.statusCode;
-      this.message = err.message;
-    } else if (err instanceof ForbiddenError) {
-      this.statusCode = err.statusCode;
-      this.message = err.message;
-    } else if (err instanceof NotFoundError) {
-      this.statusCode = err.statusCode;
-      this.message = err.message;
-    } else if (err instanceof ConflictError) {
+    if (
+      err instanceof BadRequestError ||
+      err instanceof UnauthorizedError ||
+      err instanceof ForbiddenError ||
+      err instanceof NotFoundError ||
+      err instanceof ConflictError
+    ) {
       this.statusCode = err.statusCode;
       this.message = err.message;
     }
