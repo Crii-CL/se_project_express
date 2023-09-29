@@ -6,24 +6,35 @@ const { errors } = require("celebrate");
 const routes = require("./routes");
 const { handleErrorMiddleware } = require("./middlewares/errorHandler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-
+const allowedOrigins = ["https://main--stellar-cascaron-f6fdcc.netlify.app"];
 const { PORT = 3001 } = process.env;
 const app = express();
-mongoose.connect("mongodb://127.0.0.1:27017/wtwr_db");
+mongoose.connect(
+  "mongodb+srv://Cris-CL:Blaze1130@wtwr.rpt06ys.mongodb.net/?retryWrites=true&w=majority"
+);
 
 app.use(express.json());
+
 app.use(helmet());
-app.use(cors());
+
+app.use(cors(allowedOrigins));
+
 app.use(requestLogger);
+
 app.get("/crash-test", () => {
   setTimeout(() => {
     throw new Error("Server will crash now");
   }, 0);
 });
+
 app.use(routes);
+
 app.use(errorLogger);
+
 app.use(errors());
+
 app.use(handleErrorMiddleware);
+
 app.use((err, req, res, next) => {
   console.error(err);
   const { statusCode = 500, message } = err;
@@ -31,4 +42,5 @@ app.use((err, req, res, next) => {
     message: statusCode === 500 ? "An error occurred on the server" : message,
   });
 });
+
 app.listen(PORT, () => {});
