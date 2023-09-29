@@ -19,7 +19,7 @@ exports.validateAddCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30).messages({
       "string.empty": `The "name" field cannot be empty`,
-      "string.min": `The minimum length of the "name"field is 2`,
+      "string.min": `The minimum length of the "name" field is 2`,
       "string.max": 'The maximum length of the "name" field is 30',
     }),
     weather: Joi.string().required().valid("Hot", "Warm", "Cold").messages({
@@ -37,7 +37,7 @@ exports.validateAddCard = celebrate({
 exports.validateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30).messages({
-      "string.min": `The minimum length of the "name"field is 2`,
+      "string.min": `The minimum length of the "name" field is 2`,
       "string.max": 'The maximum length of the "name" field is 30',
       "string.empty": 'The "name" field must be filled in',
     }),
@@ -46,6 +46,17 @@ exports.validateUser = celebrate({
     password: Joi.string().required().min(5).messages({
       "string.min": `The minimum length of the "password" field is 5`,
     }),
+  }),
+});
+
+exports.validateEditUser = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30).messages({
+      "string.min": `The minimum length of the "name" field is 2`,
+      "string.max": 'The maximum length of the "name" field is 30',
+      "string.empty": 'The "name" field must be filled in',
+    }),
+    avatar: Joi.string().required().custom(validateURL),
   }),
 });
 

@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
-const error = require("../utils/errors");
 const {
   NotFoundError,
   ConflictError,
