@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
@@ -9,9 +11,8 @@ const { requestLogger, errorLogger } = require("./middlewares/logger");
 const allowedOrigins = ["https://main--stellar-cascaron-f6fdcc.netlify.app"];
 const { PORT = 3001 } = process.env;
 const app = express();
-mongoose.connect(
-  "mongodb+srv://Cris-CL:Blaze1130@wtwr.rpt06ys.mongodb.net/?retryWrites=true&w=majority"
-);
+
+mongoose.connect(process.env.MONGODB_URI);
 
 app.use(express.json());
 
