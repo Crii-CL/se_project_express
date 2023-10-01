@@ -9,10 +9,19 @@ const routes = require("./routes");
 const { handleErrorMiddleware } = require("./middlewares/errorHandler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const allowedOrigins = ["https://main--stellar-cascaron-f6fdcc.netlify.app"];
-const { PORT = 3001 } = process.env;
+
+const { PORT = 3001, NODE_ENV } = process.env;
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URI);
+const mongodbUri =
+  NODE_ENV === "production"
+    ? process.env.MONGODB_URI_PROD
+    : process.env.MONGODB_URI_DEV;
+
+mongoose.connect(mongodbUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.use(express.json());
 
@@ -44,4 +53,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {});
+app.listen(PORT, () => {
+  console.log(`Server is running in ${NODE_ENV} mode on port ${PORT}`);
+});
