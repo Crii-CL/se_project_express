@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
+const cors = require("cors");
 const { errors } = require("celebrate");
 const routes = require("./routes");
 const { handleErrorMiddleware } = require("./middlewares/errorHandler");
@@ -31,13 +32,14 @@ app.use(express.json());
 
 app.use(helmet());
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", allowedOrigins.join(", "));
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
-  res.header("Access-Control-Allow-Credentials", "true");
-  next();
-});
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true,
+  })
+);
 
 app.use(requestLogger);
 
