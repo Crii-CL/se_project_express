@@ -13,12 +13,11 @@ const allowedOrigins = [
   "http://localhost:3000",
 ];
 
-const {
-  PORT = 3001,
-  NODE_ENV,
-  MONGODB_URI_PROD,
-  MONGODB_URI_DEV,
-} = process.env;
+const { NODE_ENV, MONGODB_URI_PROD, MONGODB_URI_DEV } = process.env;
+
+const PORT =
+  NODE_ENV === "production" ? process.env.PORT || 80 : process.env.PORT || 3001;
+
 const app = express();
 
 const mongodbUri =
