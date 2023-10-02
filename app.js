@@ -8,8 +8,10 @@ const { errors } = require("celebrate");
 const routes = require("./routes");
 const { handleErrorMiddleware } = require("./middlewares/errorHandler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-// const allowedOrigins = ["https://stellar-cascaron-f6fdcc.netlify.app"];
-const allowedOrigins = ["*"];
+const allowedOrigins = [
+  "https://stellar-cascaron-f6fdcc.netlify.app",
+  "http://localhost:3000",
+];
 
 const {
   PORT = 3001,
@@ -36,7 +38,7 @@ app.use(
     origin: allowedOrigins,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type,Authorization",
-    credentials: true;
+    credentials: true,
   })
 );
 
