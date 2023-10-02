@@ -32,12 +32,26 @@ app.use(express.json());
 
 app.use(helmet());
 
+// app.use(
+//   cors({
+//     origin: allowedOrigins,
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     allowedHeaders: "Content-Type,Authorization",
+//     credentials: true,
+//   })
+// );
+
+app.use(cors());
+
 app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Content-Type,Authorization",
-    credentials: true,
+  "/signin",
+  createProxyMiddleware({
+    target: "https://soft-starburst-848c30.netlify.app",
+    changeOrigin: true,
+    headers: {
+      "Access-Control-Allow-Origin":
+        "https://stellar-cascaron-f6fdcc.netlify.app",
+    },
   })
 );
 
