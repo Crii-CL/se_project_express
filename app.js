@@ -23,7 +23,7 @@ const app = express();
 const mongodbUri =
   NODE_ENV === "production" ? MONGODB_URI_PROD : MONGODB_URI_DEV;
 
-mongoose.connect("mongodb://127.0.0.1:27017/wtwr_db", {
+mongoose.connect(mongodbUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
