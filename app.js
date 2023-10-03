@@ -23,7 +23,7 @@ const app = express();
 const mongodbUri =
   NODE_ENV === "production" ? MONGODB_URI_PROD : MONGODB_URI_DEV;
 
-mongoose.connect(mongodbUri, {
+mongoose.connect("mongodb://127.0.0.1:27017/wtwr_db", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -32,26 +32,14 @@ app.use(express.json());
 
 app.use(helmet());
 
-// app.use(
-//   cors({
-//     origin: allowedOrigins,
-//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//     allowedHeaders: "Content-Type,Authorization",
-//     credentials: true,
-//   })
-// );
-
-app.use(function (req, res, next) {
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://stellar-cascaron-f6fdcc.netlify.app"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true,
+  })
+);
 
 app.use(requestLogger);
 
