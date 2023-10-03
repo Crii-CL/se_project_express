@@ -34,7 +34,7 @@ app.use(helmet());
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: "https://stellar-cascaron-f6fdcc.netlify.app",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type,Authorization",
     credentials: true,
